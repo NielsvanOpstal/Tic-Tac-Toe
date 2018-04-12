@@ -2,7 +2,7 @@ import random
 
 Names = ['Stephen', 'Daan', 'Kees', 'Tim']
 
-Beroepen = ['leraar', 'advocaat']
+Beroepen = ['leraar', 'advocaat', 'putjesschepper']
 
 def get_name():
     naam = random.choice(Names)
