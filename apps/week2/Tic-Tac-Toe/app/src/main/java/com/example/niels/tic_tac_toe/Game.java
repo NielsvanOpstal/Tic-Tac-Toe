@@ -12,8 +12,8 @@ import static com.example.niels.tic_tac_toe.Tile.CROSS;
 import static com.example.niels.tic_tac_toe.Tile.INVALID;
 
 public class Game implements Serializable {
-    final private int BOARD_SIZE = 3;
-    private Tile[][] board;
+    final public int BOARD_SIZE = 3;
+    public Tile[][] board;
     public Boolean playerOneTurn;  // true if player 1's turn, false if player 2's turn
     public int movesPlayed;
     private Boolean gameOver;
@@ -51,7 +51,7 @@ public class Game implements Serializable {
         return INVALID;
     }
 
-    public boolean gameWon() {
+    public Tile gameWon() {
 
 
         List<Tile> tiles = Arrays.asList(CIRCLE, CROSS);
@@ -60,22 +60,27 @@ public class Game implements Serializable {
         for (Tile tile : tiles) {
             for (int i = 0; i < BOARD_SIZE; i++) {
                 for (int j = 0; j < BOARD_SIZE; j++) {
+
                     if (board[i][j] == tile) {
                         check_hor += 1;
                     }
                     if (board[j][i] == tile) {
                         check_ver += 1;
                     }
+                    System.out.println(tile);
                 }
+
                 if (check_hor == 3 || check_ver == 3) {
-                    return true;
+                    System.out.print("JA");
+                    System.out.println(tile);
+                    return tile;
                 }
                 check_hor = 0;
                 check_ver = 0;
             }
         }
 
-     return false;
+     return INVALID;
     }
 
 
