@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void tileClicked(View view) {
         int id = view.getId();
-        Button button = (Button) view;
+        ImageButton button = (ImageButton) view;
         String tag = view.getTag().toString();
         int place = Integer.parseInt(tag);
 
@@ -36,20 +37,20 @@ public class MainActivity extends AppCompatActivity {
         int column = place % 3;
 
         Tile tile = game.draw(row, column);
-
+        System.out.println(tile);
         switch(tile) {
             case CROSS:
-                button.setText("X");
+                button.setBackgroundResource(R.drawable.cross);
                 break;
             case CIRCLE:
-                button.setText("O");
+                button.setBackgroundResource(R.drawable.circle);
                 break;
             case INVALID:
                 if (game.playerOneTurn) {
-                    game.playerOneTurn = false;
+                    game.playerOneTurn = true;
                 }
                 else{
-                    game.playerOneTurn = true;
+                    game.playerOneTurn = false;
                 }
                 break;
         }
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             game = new Game();
             for (int id : idList) {
                 Button button = findViewById(id);
-                button.setText("");
+                button.setBackgroundResource(R.drawable.square);
             }
 
         }

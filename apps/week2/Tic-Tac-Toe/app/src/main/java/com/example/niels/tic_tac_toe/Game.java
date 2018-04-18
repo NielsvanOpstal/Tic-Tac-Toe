@@ -1,5 +1,6 @@
 package com.example.niels.tic_tac_toe;
 
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import static com.example.niels.tic_tac_toe.Tile.CIRCLE;
 import static com.example.niels.tic_tac_toe.Tile.CROSS;
 import static com.example.niels.tic_tac_toe.Tile.INVALID;
 
-public class Game {
+public class Game implements Serializable {
     final private int BOARD_SIZE = 3;
     private Tile[][] board;
     public Boolean playerOneTurn;  // true if player 1's turn, false if player 2's turn
