@@ -17,7 +17,7 @@ import static com.example.niels.tic_tac_toe.Tile.INVALID;
 public class MainActivity extends AppCompatActivity {
 
     Game game;
-    private List<Integer> idList = new ArrayList<>();
+    private ArrayList<Integer> idList = new ArrayList<>();
     private boolean playing = true;
 
 
@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         game = new Game();
-
+        TextView log = findViewById(R.id.textView);
+        log.setText("Turn: player one");
 
     }
 
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         int id = view.getId();
         String tag = view.getTag().toString();
         int place = Integer.parseInt(tag);
-        TextView log = findViewById(R.id.textView2);
+        TextView log = findViewById(R.id.textView);
 
         if (playing) {
             idList.add(id);
@@ -50,9 +51,11 @@ public class MainActivity extends AppCompatActivity {
             switch (tile) {
                 case CROSS:
                     view.setBackgroundResource(R.drawable.cross);
+                    log.setText("Turn: player two");
                     break;
                 case CIRCLE:
                     view.setBackgroundResource(R.drawable.circle);
+                    log.setText("Turn: player one");
                     break;
                 case INVALID:
                     if (game.playerOneTurn) {
@@ -86,41 +89,38 @@ public class MainActivity extends AppCompatActivity {
             }
             idList.clear();
             playing = true;
+            TextView log = findViewById(R.id.textView);
+            log.setText("Turn: player one");
         }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         outState.putSerializable("game", game);
+        outState.putIntegerArrayList("idList", idList);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
+        idList = savedInstanceState.getIntegerArrayList("idList");
         game = (Game) savedInstanceState.getSerializable("game");
-        int counter = 0;
-        for (int i = 0; i < game.BOARD_SIZE; i++ ) {
-            for (int j = 0; j < game.BOARD_SIZE; j++) {
-                if (game.board[i][j] == CROSS) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("imageButton");
-                    sb.append(counter);
-                    String id = sb.toString();
-                    System.out.print(id);
-                    ImageButton button = findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                    button.setBackgroundResource(R.drawable.cross);
-                    }
-                if (game.board[i][j] == CIRCLE) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("imageButton");
-                    sb.append(counter);
-                    String id = sb.toString();
-                    ImageButton button = findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                    button.setBackgroundResource(R.drawable.circle);
-                }
-                counter += 1;
+
+        for (int id : idList) {
+            ImageButton button = findViewById(id);
+            String tag = button.getTag().toString();
+            int place = Integer.parseInt(tag);
+            int row = place / 3;
+            int column = place % 3;
+            if (game.board[row][column] == CROSS) {
+                button.setBackgroundResource(R.drawable.cross);
             }
+            else {
+                button.setBackgroundResource(R.drawable.circle);
+            }
+
         }
 
     }

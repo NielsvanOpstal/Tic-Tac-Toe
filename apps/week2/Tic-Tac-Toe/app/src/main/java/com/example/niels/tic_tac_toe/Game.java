@@ -17,8 +17,11 @@ public class Game implements Serializable {
     public Boolean playerOneTurn;  // true if player 1's turn, false if player 2's turn
     public int movesPlayed;
     private Boolean gameOver;
+
     private int check_hor;
     private int check_ver;
+    private int check_diag;
+    private int check_diag1;
 
     public Game() {
         board = new Tile[BOARD_SIZE][BOARD_SIZE];
@@ -56,7 +59,6 @@ public class Game implements Serializable {
 
         List<Tile> tiles = Arrays.asList(CIRCLE, CROSS);
         //Checks the horizontal and vertical possibilities to win
-        System.out.println("HALLO");
         for (Tile tile : tiles) {
             for (int i = 0; i < BOARD_SIZE; i++) {
                 for (int j = 0; j < BOARD_SIZE; j++) {
@@ -67,16 +69,21 @@ public class Game implements Serializable {
                     if (board[j][i] == tile) {
                         check_ver += 1;
                     }
-                    System.out.println(tile);
+                    if (board[j][j] == tile) {
+                        check_diag += 1;
+                    }
+                    if (board[2 - j][j] == tile) {
+                        check_diag1 += 1;
+                    }
                 }
 
-                if (check_hor == 3 || check_ver == 3) {
-                    System.out.print("JA");
-                    System.out.println(tile);
+                if (check_hor == 3 || check_ver == 3 || check_diag == 3 || check_diag1 == 3) {
                     return tile;
                 }
                 check_hor = 0;
                 check_ver = 0;
+                check_diag = 0;
+                check_diag1 = 0;
             }
         }
 
