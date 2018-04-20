@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     Game game;
     private ArrayList<Integer> idList = new ArrayList<>();
     private boolean playing = true;
-
+    TextView log;
 
 
 
@@ -29,25 +29,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         game = new Game();
-        TextView log = findViewById(R.id.textView);
+        log = findViewById(R.id.textView);
         log.setText("Turn: player one");
 
     }
 
     public void tileClicked(View view) {
+        // Changes the tileClicked to a cross or circle, depending on who's turn it is.
+
+        Tile won;
         int id = view.getId();
         String tag = view.getTag().toString();
         int place = Integer.parseInt(tag);
-        TextView log = findViewById(R.id.textView);
 
         if (playing) {
+            // Adds the clicked tile's id to the list
             idList.add(id);
 
+            // Determines the row and column of the button clicked
             int row = place / 3;
             int column = place % 3;
 
+            // Tile gets the tile to print on the button
             Tile tile = game.draw(row, column);
-            System.out.println(tile);
+
+            // Depending on tile, sets cross, circle or nothing
             switch (tile) {
                 case CROSS:
                     view.setBackgroundResource(R.drawable.cross);
@@ -65,14 +71,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
             }
-            game.movesPlayed += 1;
-
-            if (game.gameWon() == CROSS) {
+            //checks if someone won
+            won = game.gameWon();
+            if (won == CROSS) {
                 playing = false;
                 log.setText("PLAYER ONE WON");
             }
 
-            else if (game.gameWon() == CIRCLE) {
+            else if (won == CIRCLE) {
                 playing = false;
                 log.setText("PLAYER TWO WON");
             }
@@ -81,15 +87,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void resetClicked(View view) {
-
+        // Creates a new game with empty tiles when reset button is clicked
             game = new Game();
+
+            // Makes the imagebuttons show the original square again
             for (int id : idList) {
                 ImageButton button = findViewById(id);
                 button.setBackgroundResource(R.drawable.square);
             }
             idList.clear();
             playing = true;
-            TextView log = findViewById(R.id.textView);
             log.setText("Turn: player one");
         }
 
